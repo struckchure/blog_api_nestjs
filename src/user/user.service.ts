@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JWTPayload, SignJWT } from 'jose';
-import UserDAO from './dao/user.dao';
+import UserDAO, { exclude } from './dao/user.dao';
 import { UserLoginDTO, UserRegisterDTO } from './dto/user.dto';
 
 @Injectable()
@@ -23,7 +23,10 @@ export class UserService {
     userRegisterDTO.password = bcrypt.hashSync(userRegisterDTO.password, 10);
     const user = await this.userDAO.createUser(userRegisterDTO);
 
-    return { ...user, tokens: await this.generateTokens({ user_id: user.id }) };
+    return {
+      ...exclude(user, ['password']),
+      tokens: await this.generateTokens({ user_id: user.id }),
+    };
   }
 
   async loginUser(userLoginDTO: UserLoginDTO) {
@@ -34,6 +37,9 @@ export class UserService {
     if (!bcrypt.compareSync(userLoginDTO.password, user.password))
       throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
 
-    return { ...user, tokens: await this.generateTokens({ user_id: user.id }) };
+    return {
+      ...exclude(user, ['password']),
+      tokens: await this.generateTokens({ user_id: user.id }),
+    };
   }
 }
