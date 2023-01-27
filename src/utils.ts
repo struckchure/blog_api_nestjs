@@ -1,4 +1,7 @@
-import { JWTPayload, SignJWT } from 'jose';
+import { UnauthorizedException } from '@nestjs/common';
+import { JWTPayload, JWTVerifyResult, SignJWT, jwtVerify } from 'jose';
+
+const secret = new TextEncoder().encode(process.env.SECRET_KEY);
 
 export function exclude(object: any, keys: string | any[]) {
   if (!keys.length) return object;
@@ -10,7 +13,6 @@ export function exclude(object: any, keys: string | any[]) {
 }
 
 export async function generateTokens(data: JWTPayload) {
-  const secret = new TextEncoder().encode(process.env.SECRET_KEY);
   const access = await new SignJWT(data)
     .setProtectedHeader({ alg: process.env.JWT_ALG })
     .setIssuedAt()
@@ -18,4 +20,20 @@ export async function generateTokens(data: JWTPayload) {
     .sign(secret);
 
   return { access };
+}
+
+interface DecodeTokenPayload extends JWTPayload {
+  user_id?: string;
+}
+
+interface DecodeTokenResult extends JWTVerifyResult {
+  payload: DecodeTokenPayload;
+}
+
+export async function decodeToken(token: string): Promise<DecodeTokenResult> {
+  try {
+    return await jwtVerify(token, secret);
+  } catch (error) {
+    throw new UnauthorizedException(error?.message);
+  }
 }
