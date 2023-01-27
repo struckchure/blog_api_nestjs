@@ -1,23 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { JWTPayload, SignJWT } from 'jose';
-import UserDAO, { exclude } from './dao/user.dao';
+import UserDAO from './dao/user.dao';
 import { UserLoginDTO, UserRegisterDTO } from './dto/user.dto';
+import { exclude, generateTokens } from 'src/utils';
 
 @Injectable()
 export class UserService {
   constructor(private userDAO: UserDAO) {}
-
-  async generateTokens(data: JWTPayload) {
-    const secret = new TextEncoder().encode(process.env.SECRET_KEY);
-    const access = await new SignJWT(data)
-      .setProtectedHeader({ alg: process.env.JWT_ALG })
-      .setIssuedAt()
-      .setExpirationTime(process.env.JWT_ACCESS_EXP)
-      .sign(secret);
-
-    return { access };
-  }
 
   async registerUser(userRegisterDTO: UserRegisterDTO) {
     userRegisterDTO.password = bcrypt.hashSync(userRegisterDTO.password, 10);
@@ -25,7 +14,7 @@ export class UserService {
 
     return {
       ...exclude(user, ['password']),
-      tokens: await this.generateTokens({ user_id: user.id }),
+      tokens: await generateTokens({ user_id: user.id }),
     };
   }
 
@@ -39,7 +28,12 @@ export class UserService {
 
     return {
       ...exclude(user, ['password']),
-      tokens: await this.generateTokens({ user_id: user.id }),
+      tokens: await generateTokens({ user_id: user.id }),
     };
+  }
+
+  async getUserProfile(userID: string) {
+    const user = await this.userDAO.getUser({ id: userID });
+    return exclude(user, ['password']);
   }
 }
