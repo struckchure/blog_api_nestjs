@@ -8,20 +8,39 @@ export default class PostDAO {
   constructor(private prisma: PrismaService) {}
 
   async createPost(postCreateDTO: PostCreateDTO) {
-    return await this.prisma.post.create({ data: postCreateDTO });
+    return await this.prisma.post.create({
+      data: postCreateDTO,
+    });
   }
 
   async listPost() {
     return await this.prisma.post.findMany({
       include: {
-        author: true,
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
+        },
       },
     });
   }
 
-  async getPost(where: Prisma.PostWhereUniqueInput) {
+  async getPost(
+    where: Prisma.PostWhereUniqueInput,
+    include?: Prisma.PostInclude,
+  ) {
     return await this.prisma.post.findUnique({
       where,
+      include: {
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
+        },
+        ...include,
+      },
     });
   }
 
