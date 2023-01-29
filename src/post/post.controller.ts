@@ -1,31 +1,15 @@
-import {
-  Body,
-  Controller,
-  ExecutionContext,
-  Get,
-  Post,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { PostService } from './post.service';
-
-import { createParamDecorator } from '@nestjs/common';
 import { PostCreateDTO } from './dto/post.dto';
-
-export const User = createParamDecorator((data, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest();
-  return request.user.id;
-});
+import { ExtendBodyWithAuthorId } from 'src/utils';
 
 @Controller('post')
 export class PostController {
   constructor(private postService: PostService) {}
 
+  @UseInterceptors(ExtendBodyWithAuthorId)
   @Post('/')
-  createPost(
-    @Body(new ValidationPipe()) postCreateDTO: PostCreateDTO,
-    @User() userID: string,
-  ) {
-    postCreateDTO.author_id = userID;
+  createPost(@Body() postCreateDTO: PostCreateDTO) {
     return this.postService.createPost(postCreateDTO);
   }
 
