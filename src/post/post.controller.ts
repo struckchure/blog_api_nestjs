@@ -9,8 +9,10 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Request,
   UseInterceptors,
 } from '@nestjs/common';
+import { AuthRequest } from 'src/middlewares';
 import { ExtendBodyWithAuthorId } from 'src/utils';
 import { PostCreateDTO, PostUpdateDTO } from './dto/post.dto';
 import { PostService } from './post.service';
@@ -47,5 +49,31 @@ export class PostController {
   @HttpCode(HttpStatus.NO_CONTENT)
   deletePost(@Param('id', new ParseUUIDPipe()) postID: string) {
     return this.postService.deletePost(postID);
+  }
+
+  // TODO adds this to a different controller (`LikeController`)
+  @Post(':id/like')
+  likePost(
+    @Request() request: AuthRequest,
+    @Param('id', new ParseUUIDPipe()) postID: string,
+  ) {
+    return this.postService.likePost({
+      user_id: request.user.id,
+      post_id: postID,
+    });
+  }
+
+  // TODO adds this to a different controller (`CommentController`)
+  @Post(':id/comment')
+  commentPost(
+    @Request() request: AuthRequest,
+    @Param('id', new ParseUUIDPipe()) postID: string,
+    @Body('body') body: string,
+  ) {
+    return this.postService.commentPost({
+      user_id: request.user.id,
+      post_id: postID,
+      body,
+    });
   }
 }
