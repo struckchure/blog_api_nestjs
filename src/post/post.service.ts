@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import PostDAO from './dao/post.dao';
-import { PostCreateDTO } from './dto/post.dto';
+import { PostCreateDTO, PostUpdateDTO } from './dto/post.dto';
 
 @Injectable()
 export class PostService {
@@ -12,5 +12,17 @@ export class PostService {
 
   async listPost() {
     return await this.postDAO.listPost();
+  }
+
+  async getPost(postID: string) {
+    return await this.postDAO.getPost({ id: postID });
+  }
+
+  async updatePost(postID: string, postUpdateDTO: PostUpdateDTO) {
+    return await this.postDAO.updatePost(postID, postUpdateDTO);
+  }
+
+  async deletePost(postID: string) {
+    return await this.postDAO.deletePost(postID);
   }
 }

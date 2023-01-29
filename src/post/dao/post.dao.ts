@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
-import { PostCreateDTO } from '../dto/post.dto';
+import { PostCreateDTO, PostUpdateDTO } from '../dto/post.dto';
 
 @Injectable()
 export default class PostDAO {
@@ -15,6 +16,25 @@ export default class PostDAO {
       include: {
         author: true,
       },
+    });
+  }
+
+  async getPost(where: Prisma.PostWhereUniqueInput) {
+    return await this.prisma.post.findUnique({
+      where,
+    });
+  }
+
+  async updatePost(postID: string, postUpdateDTO: PostUpdateDTO) {
+    return await this.prisma.post.update({
+      where: { id: postID },
+      data: postUpdateDTO,
+    });
+  }
+
+  async deletePost(postID: string) {
+    return await this.prisma.post.delete({
+      where: { id: postID },
     });
   }
 }
