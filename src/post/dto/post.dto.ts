@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import {
+  IsAlphanumeric,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+} from 'class-validator';
 
 export class PostCreateDTO {
   @IsUUID()
@@ -8,5 +13,15 @@ export class PostCreateDTO {
   title: string;
 
   @IsNotEmpty()
+  body: string;
+}
+
+export class PostUpdateDTO {
+  @IsOptional()
+  @IsAlphanumeric()
+  title: string;
+
+  @IsOptional()
+  @IsAlphanumeric()
   body: string;
 }
