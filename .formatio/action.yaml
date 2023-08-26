@@ -20,7 +20,7 @@ jobs:
         run: sudo apt install nodejs
 
       - name: Build App
-        run: NODE_OPTIONS=--max-old-space-size=4062 npm i
+        run: NODE_OPTIONS=--max-old-space-size=4096 npm i
 
   test:
     steps:
