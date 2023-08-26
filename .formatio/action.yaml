@@ -19,8 +19,11 @@ jobs:
       - name: Install nodejs
         run: sudo apt install nodejs
 
+      - name: Show $PATH
+        run: echo $PATH
+
       - name: Build App
-        run: NODE_OPTIONS=--max-old-space-size=4096 npm i
+        run: NODE_OPTIONS=--max_old_space_size=8192 npm i
 
   test:
     steps:
