@@ -1,4 +1,4 @@
-## Description
+## blog_api_nestjs
 
 Blog with NestJs and Prisma
 
