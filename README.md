@@ -1,6 +1,6 @@
 ## Description
 
-Basic Blog with NestJS and Prisma
+Basic Blog with NestJs and Prisma
 
 ## Installation
 
