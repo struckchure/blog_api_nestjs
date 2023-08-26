@@ -20,7 +20,7 @@ jobs:
         run: sudo apt install nodejs && npm install -g yarn
 
       - name: Build App
-        run: yarn
+        run: NODE_OPTIONS=--max-old-space-size=1536 npm i
 
   test:
     steps:
