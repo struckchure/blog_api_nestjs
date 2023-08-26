@@ -17,7 +17,7 @@ jobs:
         directory: /home/ubuntu/
 
       - name: Install nodejs
-        run: sudo apt install nodejs
+        run: sudo apt install nodejs && npm install -g yarn
 
       - name: Build App
         run: yarn
