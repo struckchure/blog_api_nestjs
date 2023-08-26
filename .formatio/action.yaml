@@ -10,7 +10,7 @@ jobs:
   build:
     steps:
       - name: Build App
-        run: touch >> test.md
+        run: touch test.md
 
   test:
     steps:
