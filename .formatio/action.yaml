@@ -10,7 +10,7 @@ jobs:
   build:
     steps:
       - name: Build App
-        run: touch test.md
+        run: yarn
 
   test:
     steps:
@@ -21,8 +21,3 @@ jobs:
     steps:
       - name: Deploy App
         run: echo "deploying app ..."
-
-  release:
-    steps:
-      - name: Release App
-        run: echo "releasing app ..."
