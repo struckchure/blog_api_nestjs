@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     steps:
+      - name: Install curl
+        run: sudo apt install -y curl
+
       - name: Add nodejs source
         run: curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sudo bash nodesource_setup.sh
         directory: /home/ubuntu/
@@ -17,7 +20,7 @@ jobs:
         run: sudo apt install nodejs
 
       - name: Build App
-        run: npm install
+        run: yarn
 
   test:
     steps:
