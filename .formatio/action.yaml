@@ -17,10 +17,10 @@ jobs:
         directory: /home/ubuntu/
 
       - name: Install nodejs
-        run: sudo apt install nodejs && npm install -g yarn
+        run: sudo apt install nodejs
 
       - name: Build App
-        run: NODE_OPTIONS=--max-old-space-size=1536 npm i
+        run: NODE_OPTIONS=--max-old-space-size=4062 npm i
 
   test:
     steps:
