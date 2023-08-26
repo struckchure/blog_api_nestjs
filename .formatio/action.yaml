@@ -10,7 +10,7 @@ jobs:
   build:
     steps:
       - name: Build App
-        run: echo "build app ..." >> test.md
+        run: touch >> test.md
 
   test:
     steps:
