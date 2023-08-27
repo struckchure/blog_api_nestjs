@@ -9,15 +9,18 @@ on:
 jobs:
   build:
     steps:
-      # - name: Install curl
-      #   run: sudo apt install -y curl
+      - name: Install curl
+        run: sudo apt install -y curl
 
-      # - name: Add nodejs source
-      #   run: curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sudo bash nodesource_setup.sh
-      #   directory: /home/ubuntu/
+      - name: Add nodejs source
+        run: curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sudo bash nodesource_setup.sh
+        directory: /home/ubuntu/
 
-      # - name: Install nodejs
-      #   run: sudo apt install nodejs
+      - name: Install nodejs
+        run: sudo apt install -y nodejs
+
+      - name: Configure global npm prefix
+        run: mdkir /home/ubuntu/.global_npm && npm config set prefix /home/ubuntu/.global_npm
 
       - name: Install dependencies
         run: export PATH="/home/ubuntu/.global_npm/bin:$PATH" && yarn
