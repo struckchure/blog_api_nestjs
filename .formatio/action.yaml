@@ -9,23 +9,18 @@ on:
 jobs:
   build:
     steps:
-      - name: Install curl
-        run: sudo apt install -y curl
+      # - name: Install curl
+      #   run: sudo apt install -y curl
 
-      - name: Add nodejs source
-        run: curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sudo bash nodesource_setup.sh
-        directory: /home/ubuntu/
+      # - name: Add nodejs source
+      #   run: curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sudo bash nodesource_setup.sh
+      #   directory: /home/ubuntu/
 
-      - name: Install nodejs
-        run: sudo apt install nodejs
+      # - name: Install nodejs
+      #   run: sudo apt install nodejs
 
-      - name: Show $PATH
-        run: echo $PATH
-
-      # - name: Build App
-      #   run: NODE_OPTIONS=--max_old_space_size=8192 npm i
       - name: Install dependencies
-        run: yarn
+        run: export PATH="/home/ubuntu/.global_npm/bin:$PATH" && yarn
 
   test:
     steps:
