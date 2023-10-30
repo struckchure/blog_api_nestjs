@@ -11,14 +11,8 @@ jobs:
       - name: Install nodejs
         run: sudo apk add --update nodejs npm
 
-      - name: Install yarn
-        run: npm install -g yarn
-
-      - name: Check Node version
-        run: node -v
-
-      - name: Check NPM version
-        run: npm -v
+      - name: Install depenendencies
+        run: cd ~/code/ && npm install
 
       - name: Check Yarn version
         run: yarn -v
