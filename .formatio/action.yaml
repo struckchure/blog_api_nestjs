@@ -9,7 +9,7 @@ jobs:
   build:
     steps:
       - name: Install nodejs
-        run: apk add --update nodejs npm
+        run: sudo apk add --update nodejs npm
 
       - name: Install yarn
         run: npm install -g yarn
