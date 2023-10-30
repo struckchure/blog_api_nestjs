@@ -14,9 +14,6 @@ jobs:
       - name: Install depenendencies
         run: cd ~/code/ && npm install
 
-      - name: Check Yarn version
-        run: yarn -v
-
   test:
     steps:
       - name: Test App
